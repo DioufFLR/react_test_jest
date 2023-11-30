@@ -39,6 +39,7 @@ const Calculator = ( {defaultB, defaultA, defaultOperator} ) =>
     {
         return (
             <input type="number"
+                   data-testid='inputA'
                    value={ inputValueA }
                    onChange={ ( e ) => setInputValueA(e.target.value ? Number.parseFloat(e.target.value) : 0) }
             />
@@ -49,6 +50,7 @@ const Calculator = ( {defaultB, defaultA, defaultOperator} ) =>
     {
         return (
             <input type="number"
+                   data-testid='inputB'
                    value={ inputValueB }
                    onChange={ ( e ) => setInputValueB(e.target.value ? Number.parseFloat(e.target.value) : 0) }
             />
@@ -58,7 +60,11 @@ const Calculator = ( {defaultB, defaultA, defaultOperator} ) =>
     const renderSelectBox = () =>
     {
         return <div>
-            <select value={ operator } onChange={ ( e ) => setOperator(e.target.value) }>
+            <select
+                data-testid='operator'
+                value={ operator }
+                onChange={ ( e ) => setOperator(e.target.value) }
+            >
                 <option value="+">+</option>
                 <option value="-">-</option>
                 <option value="x">x</option>
@@ -74,7 +80,7 @@ const Calculator = ( {defaultB, defaultA, defaultOperator} ) =>
             { renderSelectBox() }
             { renderInputB() }
             <h2 style={ {marginTop: 20} }>Result</h2>
-            { getResult() }
+            <span data-testid='result'>{ getResult() }</span>
         </>
 
     );
