@@ -1,4 +1,3 @@
-import 'react-dropdown/style.css'
 import {divide, multiply, substract, sum} from "../../utils/math-functions";
 import {useState} from "react";
 
@@ -21,9 +20,18 @@ const Calculator = ( {defaultB, defaultA, defaultOperator} ) =>
             case 'x':
                 return multiply(inputValueA, inputValueB)
             case '/':
-                return divide(inputValueA, inputValueB)
+                return divideSafely(inputValueA, inputValueB)
             default:
                 return 'No operator provided'
+        }
+    }
+
+    const divideSafely = ( a, b ) =>
+    {
+        try {
+            return divide(a, b)
+        } catch (error) {
+            return error.message;
         }
     }
 
@@ -32,7 +40,7 @@ const Calculator = ( {defaultB, defaultA, defaultOperator} ) =>
         return (
             <input type="number"
                    value={ inputValueA }
-                   onChange={ ( e ) => setInputValueA(Number.parseFloat(e.target.value)) }
+                   onChange={ ( e ) => setInputValueA(e.target.value ? Number.parseFloat(e.target.value) : 0) }
             />
         )
     }
@@ -42,14 +50,15 @@ const Calculator = ( {defaultB, defaultA, defaultOperator} ) =>
         return (
             <input type="number"
                    value={ inputValueB }
-                   onChange={ ( e ) => setInputValueB(Number.parseFloat(e.target.value)) }
+                   onChange={ ( e ) => setInputValueB(e.target.value ? Number.parseFloat(e.target.value) : 0) }
             />
         )
     }
 
-    const renderSelectBox = () => {
+    const renderSelectBox = () =>
+    {
         return <div>
-            <select value={operator} onChange={(e) => setOperator(e.target.value)}>
+            <select value={ operator } onChange={ ( e ) => setOperator(e.target.value) }>
                 <option value="+">+</option>
                 <option value="-">-</option>
                 <option value="x">x</option>
@@ -61,10 +70,10 @@ const Calculator = ( {defaultB, defaultA, defaultOperator} ) =>
     return (
         <>
             <h1 style={ {marginBottom: 40} }>Calculator</h1>
-            {renderInputA()}
-            {renderSelectBox()}
-            {renderInputB()}
-            <h2 style={{marginTop: 20}}>Result</h2>
+            { renderInputA() }
+            { renderSelectBox() }
+            { renderInputB() }
+            <h2 style={ {marginTop: 20} }>Result</h2>
             { getResult() }
         </>
 
