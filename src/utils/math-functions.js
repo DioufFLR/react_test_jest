@@ -11,5 +11,11 @@ function multiply (a = 0, b = 0) {
 }
 
 function divide(a = 0, b = 0) {
-    return Number.parseFloat((a / b).toFixed(2));
+    if( b !== 0){
+        return Number.parseFloat((a / b).toFixed(2));
+    } else {
+        throw new Error("You can't divide by 0")
+    }
 }
+
+export {sum, substract, multiply, divide}
