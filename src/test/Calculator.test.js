@@ -1,4 +1,4 @@
-import {render, screen} from '@testing-library/react';
+import {fireEvent, getByDisplayValue, render, screen} from '@testing-library/react';
 import Calculator from "../components/Calculator/Calculator";
 import expect from "expect";
 
@@ -43,6 +43,28 @@ describe('<Calculator />', () =>
         expect(getOperator()).toBe('x');
         expect(getResult()).toBe('120')
     });
+
+    it('calculate correctly when the user update an input', () =>
+    {
+        render(<Calculator defaultA={ 12 } defaultB={ 10 } defaultOperator={ 'x' }/>)
+        const {getInputA, getInputB, getOperator, getResult} = getCalculator();
+        fireEvent.change(screen.getByTestId('inputA'), {target: {value: 3}})
+        screen.debug(screen.getByTestId('inputA'))
+        expect(getInputA()).toBe('3')
+        fireEvent.change(screen.getByTestId('inputB'), {target: {value: 3}})
+        expect(getInputA()).toBe('3')
+        fireEvent.change(screen.getByTestId('operator'), {target: {value: '-'},})
+        expect(getOperator()).toBe('-')
+        expect(getResult()).toBe('0')
+    });
+
+    it('displays an error when we divide by 0', () =>
+    {
+        render(<Calculator defaultA={ 0 } defaultB={ 0 } defaultOperator={ '/' }/>)
+        const {getResult} = getCalculator();
+        expect(getResult()).toBe("You can't divide by 0")
+    })
+
 });
 
 const getCalculator = () =>
