@@ -65,6 +65,31 @@ describe('<Calculator />', () =>
         expect(getResult()).toBe("You can't divide by 0")
     })
 
+    it('displays an error when the operator is invalid', () =>
+    {
+        render(<Calculator defaultA={ 0 } defaultB={ 0 } defaultOperator={ '/' }/>)
+        const {getInputA, getInputB, getOperator, getResult} = getCalculator();
+        fireEvent.change(screen.getByTestId('operator'), {target: {value: 'Should display an error'},})
+        expect(getResult()).toBe('No operator provided')
+    });
+
+    it('concider an empty input as 0', () =>
+    {
+        render(<Calculator defaultA={ 12 } defaultB={ 10 } defaultOperator={ 'x' }/>)
+        const {getInputA, getInputB, getOperator, getResult} = getCalculator();
+        fireEvent.change(screen.getByTestId('inputA'), {
+            target: {
+                value: ''
+            }
+        })
+        fireEvent.change(screen.getByTestId('inputB'), {
+            target: {
+                value: ''
+            }
+        })
+        expect(getResult()).toBe('0')
+    });
+
 });
 
 const getCalculator = () =>
